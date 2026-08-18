@@ -8,7 +8,7 @@ set -euo pipefail
 # This file is updated by ./frontend-assets-update.sh
 
 declare -A revs=(
-    ["mempool/mining-pool-logos"]=53972ebbd08373cf4910cbb3e6421a1f3bba4563
+    ["mempool/mining-pool-logos"]=f6f0a8a3f6eeb16eb769590a09fd6c82bd20c745
 )
 
 fetchFile() {

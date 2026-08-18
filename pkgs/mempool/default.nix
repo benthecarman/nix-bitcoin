@@ -1,7 +1,7 @@
 { lib
 , stdenvNoCC
-, nodejs_22
-, nodejs-slim_22
+, nodejs_24
+, nodejs-slim_24
 , fetchFromGitHub
 , fetchNodeModules
 , runCommand
@@ -16,34 +16,34 @@
 , napi-rs-cli
 }:
 rec {
-  nodejs = nodejs_22;
-  nodejsRuntime = nodejs-slim_22;
+  nodejs = nodejs_24;
+  nodejsRuntime = nodejs-slim_24;
 
-  version = "3.2.1";
+  version = "3.3.1";
 
   src = fetchFromGitHub {
     owner = "mempool";
     repo = "mempool";
     tag = "v${version}";
-    hash = "sha256-O2XPD1/BXQnzuOP/vMVyRfmFZEgjA85r+PShWne0vqU=";
+    hash = "sha256-Py+ou6xwgentp1PNluDNPjw+gdWM3HxWVPHewuo/5hE=";
   };
 
   nodeModules = {
     frontend = fetchNodeModules {
       inherit src nodejs;
       sourceRoot = "source/frontend";
-      hash = "sha256-+jfgsAkDdYvgso8uSHaBj/sQL3fC/ABQWzVTXfdZcU0=";
+      hash = "sha256-yXMGRVY946Wkqu002Wx//JL0V39Lbi6pl6gWAYhOKWk=";
     };
     backend = fetchNodeModules {
       inherit src nodejs;
       sourceRoot = "source/backend";
-      hash = "sha256-y5l2SYZYK9SKSy6g0+mtTWD6JFkkdQHHBboECpEvWZ4=";
+      hash = "sha256-D3PfOmXbGTzNw3Mdcm4/BDb3kRXOYSsRIT3W1MvBTwo=";
     };
   };
 
   frontendAssets = fetchFiles {
     name = "mempool-frontend-assets";
-    hash = "sha256-r6GfOY8Pdh15o2OQMk8syfvWMV6WMCReToAEkQm7tqQ=";
+    hash = "sha256-Uja7CsXUOJcMlGvQ866olxvrFFFgvRINLqLVZ3/ZEgE=";
     fetcher = ./frontend-assets-fetch.sh;
   };
 
@@ -103,7 +103,10 @@ rec {
         ln -s ${builtins.toFile "mempool-frontend-config" (builtins.toJSON config)} mempool-frontend-config.json
       ''}
 
-      npm run build
+      # Angular's interactive renderers emit updates without newlines. The
+      # localization spinner also ignores `--progress=false`, so force TTY
+      # detection off to prevent the Nix daemon buffering an unbounded log line.
+      NG_FORCE_TTY=0 npm run build
 
       # Add assets that would otherwise be downloaded by sync-assets.js
       ${sync} ${frontendAssets}/ dist/mempool/browser/resources
