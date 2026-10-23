@@ -5,7 +5,7 @@ set -euo pipefail
 # Use this to start a debug shell at the location of this statement
 # . "${BASH_SOURCE[0]%/*}/../../helper/start-bash-session.sh"
 
-version=3.3.1
+version=3.3.2
 # You can also specify a rev instead:
 # rev=57eddac7f0b99b4fe84d91c0f4a50a4f7ccfe55f
 owner=mempool
