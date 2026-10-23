@@ -18,6 +18,15 @@ let self = {
   clightning-rest = pkgs.callPackage ./clightning-rest { inherit (self) fetchNodeModules; };
   clightning-plugins = pkgs.lib.recurseIntoAttrs (import ./clightning-plugins pkgs self.nbPython3Packages);
   clnrest = pkgs.callPackage ./clnrest { inherit (self.pinned) clightning; };
+  fulcrum = pkgsUnstable.fulcrum.overrideAttrs (finalAttrs: _: {
+    version = "2.1.4";
+    src = pkgs.fetchFromGitHub {
+      owner = "cculianu";
+      repo = "Fulcrum";
+      tag = "v${finalAttrs.version}";
+      hash = "sha256-YfID94tmNTg+BqEEAmB3if+gNCNrU3NamTOMVfjXAMY=";
+    };
+  });
   joinmarket = pkgs.callPackage ./joinmarket { inherit (self) nbPython3PackagesJoinmarket; };
   lndinit = pkgs.callPackage ./lndinit { };
   liquid-swap = pkgs.python3Packages.callPackage ./liquid-swap { };
